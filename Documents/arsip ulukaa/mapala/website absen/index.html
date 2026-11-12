@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPALA MUCI - Sistem Absensi Piket, Rapat & Kegiatan</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- SheetJS (XLSX) untuk Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <!-- Hubungkan Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: { 950: '#060E1A', 900: '#0B192C', 800: '#112240', 700: '#1E3E62', 600: '#274C77', 500: '#3B6998' },
+                        gold: { 400: '#FBBF24', 500: '#F59E0B', 600: '#D97706' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-navy-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-gold-500 selection:text-navy-950">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- HALAMAN LOGIN -->
+    <div id="login-view" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        <div class="w-full max-w-md z-10 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                    MAPALA <span class="text-gold-400">MUCI</span>
+                </h1>
+                <p class="text-slate-400 text-xs sm:text-sm mt-1">Sistem Informasi Piket Sekretariat, Rapat & Kegiatan</p>
+            </div>
+
+            <div class="bg-navy-900/90 backdrop-blur-md border border-navy-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
+                <div class="grid grid-cols-2 p-1.5 bg-navy-950 rounded-2xl border border-navy-800 mb-6">
+                    <button type="button" id="tab-btn-anggota" onclick="switchLoginRole('anggota')" class="py-2.5 px-4 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-navy-700 text-white shadow">
+                        <i class="fa-solid fa-user-tag text-gold-400"></i> Anggota
+                    </button>
+                    <button type="button" id="tab-btn-admin" onclick="switchLoginRole('admin')" class="py-2.5 px-4 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-shield-halved text-gold-400"></i> Admin
+                    </button>
+                </div>
+
+                <!-- Form Login Anggota -->
+                <form id="form-login-anggota" onsubmit="handleMemberLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nama Lengkap Anggota</label>
+                        <input type="text" id="member-username" required placeholder="Masukkan nama..." class="w-full px-4 py-3 bg-navy-950 border border-navy-700 focus:border-gold-500 rounded-xl text-sm text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nomor NPAM (Password)</label>
+                        <input type="password" id="member-password" required placeholder="MUCI-001" class="w-full px-4 py-3 bg-navy-950 border border-navy-700 focus:border-gold-500 rounded-xl text-sm text-white focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 px-4 bg-gold-500 hover:bg-gold-400 text-navy-950 font-bold rounded-xl text-sm shadow-lg transition">
+                        Masuk Sebagai Anggota
+                    </button>
+                </form>
+
+                <!-- Form Login Admin -->
+                <form id="form-login-admin" onsubmit="handleAdminLogin(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Username Admin</label>
+                        <input type="text" id="admin-username" required placeholder="Username admin" class="w-full px-4 py-3 bg-navy-950 border border-navy-700 focus:border-gold-500 rounded-xl text-sm text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Password Admin</label>
+                        <input type="password" id="admin-password" required placeholder="Password admin" class="w-full px-4 py-3 bg-navy-950 border border-navy-700 focus:border-gold-500 rounded-xl text-sm text-white focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full py-3.5 px-4 bg-navy-600 hover:bg-navy-500 text-white font-bold rounded-xl text-sm shadow-lg transition">
+                        Masuk Dashboard Admin
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panggil File Logika JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
